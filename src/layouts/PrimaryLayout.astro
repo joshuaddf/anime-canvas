@@ -1,6 +1,7 @@
 ---
 import "../styles/globals.css";
-// import "../script/Anime.js";
+import "../script/Anime.js";
+import "../script/Lenis.js";
 ---
 
 <html lang="en">
@@ -12,14 +13,67 @@ import "../styles/globals.css";
     <title>Faint note</title>
   </head>
   <body>
-    <section class="intro">
+    <!-- <section class="intro">
       <h1>hi</h1>
-    </section>
+    </section> -->
+    <div class="btn">
+      <div class="btn-slider">
+        <div class="el">
+          <span class="">Info</span>
+        </div>
+        <div class="el">
+          <span class="">Close</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-container">
+      <p class="header-text">
+        Faint note is quiet, brief acknowledgement of photography. Created by
+        me, inspired by some photos I took in 2024.
+      </p>
+    </div>
+
+    <div class="overlay"></div>
+
     <slot />
   </body>
 </html>
 
 <style>
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .header-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background-color: #f7f5f2;
+    z-index: 9;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    container-type: inline-size;
+  }
+
+  .header-text {
+    font-family: "Helvetica", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+    max-width: 50ch;
+    padding: 2rem;
+    line-height: 1.1;
+    color: #4a4a4a;
+  }
+
   section {
     width: 100%;
     height: 100vh;
@@ -28,5 +82,48 @@ import "../styles/globals.css";
     align-items: center;
     justify-content: center;
   }
+
+  .btn {
+    position: fixed;
+    z-index: 99;
+    top: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 25px;
+    /* background-color: red; */
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: "Helvetica", sans-serif;
+    font-size: clamp(1rem, 1.1vw, 1.5rem);
+    overflow: hidden;
+  }
+
+  .btn-slider {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .el {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:nth-child(2) {
+      position: absolute;
+      top: 100%;
+    }
+  }
 </style>
-<script type="module" src="/src/script/Anime.js"></script>
+
+<script>
+  import { setupAnimations } from "../script/Anime";
+  // import { setupLenis } from "../script/Lenis";
+  // setupLenis();
+  setupAnimations();
+</script>
