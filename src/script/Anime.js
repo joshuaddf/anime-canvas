@@ -22,7 +22,7 @@ export function setupAnimations() {
           trigger: text,
           start: "top 70%",
           end: "top 20%",
-          markers: true,
+          // markers: true,
           // scrub: true,
         },
       });
