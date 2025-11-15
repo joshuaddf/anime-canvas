@@ -8,19 +8,19 @@ export function setupAnimations() {
   document.addEventListener("DOMContentLoaded", () => {
     const sectionText = document.querySelectorAll(".section-text");
 
+    // section text animation
     sectionText.forEach((text) => {
       const split = new SplitText(text, { type: "lines", mask: "lines" });
       gsap.set(split.lines, { y: 90 });
 
       gsap.to(split.lines, {
         y: 0,
-        // opacity: 1,
         duration: 1,
         stagger: 0.15,
         ease: "power4.out",
         scrollTrigger: {
           trigger: text,
-          start: "top 80%",
+          start: "top 70%",
           end: "top 20%",
           markers: true,
           // scrub: true,
@@ -29,6 +29,7 @@ export function setupAnimations() {
     });
   });
 
+  // header animation
   const button = document.querySelector(".btn");
   const buttonSlider = document.querySelector(".btn-slider");
   const header = document.querySelector(".header-container");
@@ -54,7 +55,7 @@ export function setupAnimations() {
       },
     });
 
-    active = 1 - active; // toggle 0 ↔ 1
+    active = 1 - active;
 
     tl.to(buttonSlider, {
       y: -active * 100 + "%",
@@ -65,7 +66,6 @@ export function setupAnimations() {
       header,
       {
         height: active * 23 + "%",
-        duration: 1.2,
       },
       "<"
     );
@@ -84,15 +84,94 @@ export function setupAnimations() {
       overlay,
       {
         opacity: active ? 1 : 0,
-        duration: 1.2,
       },
       "<"
-    )
+    );
 
     if (overlay === 1) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
+  });
+
+  // stack animation
+  const section2 = document.querySelector("#section-2");
+  const sections2Text = section2.querySelector(".section-text");
+  const imgStack = section2.querySelector(".img-stack");
+  const images = imgStack.querySelectorAll("img");
+  const section3 = document.querySelector("#section-3");
+  const section3Text = section3.querySelector(".section-text");
+
+  function getPositions() {
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+      return [
+        { x: -150, y: -300, rotation: -15, scale: 0.3 },
+        { x: 0, y: -300, rotation: 0, scale: 0.3 },
+        { x: 150, y: -300, rotation: 15, scale: 0.3 },
+        { x: -150, y: 300, rotation: 15, scale: 0.3 },
+        { x: 0, y: 300, rotation: 0, scale: 0.3 },
+        { x: 150, y: 300, rotation: -15, scale: 0.3 },
+      ];
+    } else {
+      return [
+        { x: -500, y: -250, rotation: -15, scale: 0.5 },
+        { x: 0, y: -300, rotation: -5, scale: 0.5 },
+        { x: 500, y: -250, rotation: 15, scale: 0.5 },
+        { x: -500, y: 250, rotation: 15, scale: 0.5 },
+        { x: 0, y: 300, rotation: 5, scale: 0.5 },
+        { x: 500, y: 250, rotation: -15, scale: 0.5 },
+      ];
+    }
+  }
+
+  gsap.set(images, {
+    opacity: 0,
+    scale: 0.8,
+  });
+
+  gsap.to(images, {
+    opacity: 1,
+    scale: 1,
+    duration: 2,
+    // stagger: 0.5,
+    ease: "power4.out",
+    scrollTrigger: {
+      trigger: section2,
+      start: "top 70%",
+      end: "top 20%",
+      scrub: true,
+    },
+  });
+
+  const disperseTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: section2,
+      start: "top top",
+      end: () => `+=${section2.offsetHeight} + 50`,
+      scrub: true,
+      pin: imgStack,
+      invalidateOnRefresh: true,
+    },
+  });
+
+  images.forEach((img, i) => {
+    const positions = getPositions();
+    const pos = positions[i];
+
+    disperseTl.to(
+      img,
+      {
+        x: pos.x,
+        y: pos.y,
+        rotation: pos.rotation,
+        // scale: pos.scale,
+        duration: 1,
+        ease: "power4.out",
+      },
+      i * 0.2
+    );
   });
 }
