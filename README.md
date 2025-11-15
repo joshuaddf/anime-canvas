@@ -1,4 +1,3 @@
 # Faint film
 
-A quiet, brief acknowledgement of photography. Created by me, inspired
-by photos taken in 2024.
+A quiet, brief acknowledgement of photography. A personal creation, inspired by some photographs taken in 2024.
