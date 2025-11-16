@@ -45,7 +45,7 @@ export function setupAnimations() {
     y: 80,
   });
 
-  let active = 1;
+  let active = 0;
 
   button.addEventListener("click", () => {
     const tl = gsap.timeline({
@@ -95,83 +95,86 @@ export function setupAnimations() {
     }
   });
 
-  // stack animation
-  const section2 = document.querySelector("#section-2");
-  const sections2Text = section2.querySelector(".section-text");
-  const imgStack = section2.querySelector(".img-stack");
-  const images = imgStack.querySelectorAll("img");
-  const section3 = document.querySelector("#section-3");
-  const section3Text = section3.querySelector(".section-text");
 
-  function getPositions() {
-    const isMobile = window.innerWidth <= 768;
+// stack animation
+const section2 = document.querySelector("#section-2");
+const sections2Text = section2.querySelector(".section-text");
+const imgStack = section2.querySelector(".img-stack");
+const images = imgStack.querySelectorAll("img");
+const section3 = document.querySelector("#section-3");
+const section3Text = section3.querySelector(".section-text");
+const section2Wrapper = document.querySelector(".section-2-wrapper");
 
-    if (isMobile) {
-      return [
-        { x: -150, y: -300, rotation: -15, scale: 0.3 },
-        { x: 0, y: -300, rotation: 0, scale: 0.3 },
-        { x: 150, y: -300, rotation: 15, scale: 0.3 },
-        { x: -150, y: 300, rotation: 15, scale: 0.3 },
-        { x: 0, y: 300, rotation: 0, scale: 0.3 },
-        { x: 150, y: 300, rotation: -15, scale: 0.3 },
-      ];
-    } else {
-      return [
-        { x: -500, y: -250, rotation: -15, scale: 0.5 },
-        { x: 0, y: -300, rotation: -5, scale: 0.5 },
-        { x: 500, y: -250, rotation: 15, scale: 0.5 },
-        { x: -500, y: 250, rotation: 15, scale: 0.5 },
-        { x: 0, y: 300, rotation: 5, scale: 0.5 },
-        { x: 500, y: 250, rotation: -15, scale: 0.5 },
-      ];
-    }
+function getPositions() {
+  const isMobile = window.innerWidth <= 768;
+
+  if (isMobile) {
+    return [
+      { x: -150, y: -300, rotation: -15, scale: 0.3 },
+      { x: 0, y: -300, rotation: 0, scale: 0.3 },
+      { x: 150, y: -300, rotation: 15, scale: 0.3 },
+      { x: -150, y: 300, rotation: 15, scale: 0.3 },
+      { x: 0, y: 300, rotation: 0, scale: 0.3 },
+      { x: 150, y: 300, rotation: -15, scale: 0.3 },
+    ];
+  } else {
+    return [
+      { x: -500, y: -250, rotation: -15, scale: 0.5 },
+      { x: 0, y: -300, rotation: -5, scale: 0.5 },
+      { x: 500, y: -250, rotation: 15, scale: 0.5 },
+      { x: -500, y: 250, rotation: 15, scale: 0.5 },
+      { x: 0, y: 300, rotation: 5, scale: 0.5 },
+      { x: 500, y: 250, rotation: -15, scale: 0.5 },
+    ];
   }
+}
 
-  gsap.set(images, {
-    opacity: 0,
-    scale: 0.8,
-  });
+gsap.set(images, {
+  opacity: 0,
+  scale: 0.8,
+});
 
-  gsap.to(images, {
-    opacity: 1,
-    scale: 1,
-    duration: 2,
-    // stagger: 0.5,
-    ease: "power4.out",
-    scrollTrigger: {
-      trigger: section2,
-      start: "top 70%",
-      end: "top 20%",
-      scrub: true,
+gsap.to(images, {
+  opacity: 1,
+  scale: 1,
+  // stagger: 0.1,
+  ease: "power4.out",
+  scrollTrigger: {
+    trigger: section2,
+    start: "top 70%",
+    end: "top 20%",
+    scrub: 1,
+  },
+});
+
+const disperseTl = gsap.timeline({
+  scrollTrigger: {
+    trigger: section2,
+    start: "top top",
+    end: `+=${section2.offsetHeight + 50}`,
+    scrub: 1, 
+    pin: imgStack, 
+    anticipatePin: 1, 
+    pinSpacing: true,
+    invalidateOnRefresh: true,
+  },
+});
+
+const positions = getPositions();
+
+images.forEach((img, i) => {
+  const pos = positions[i]; 
+
+  disperseTl.to(
+    img,
+    {
+      x: pos.x,
+      y: pos.y,
+      rotation: pos.rotation,
+      // scale: pos.scale, 
+      ease: "power2.inOut",
     },
-  });
-
-  const disperseTl = gsap.timeline({
-    scrollTrigger: {
-      trigger: section2,
-      start: "top top",
-      end: () => `+=${section2.offsetHeight} + 50`,
-      scrub: true,
-      pin: imgStack,
-      invalidateOnRefresh: true,
-    },
-  });
-
-  images.forEach((img, i) => {
-    const positions = getPositions();
-    const pos = positions[i];
-
-    disperseTl.to(
-      img,
-      {
-        x: pos.x,
-        y: pos.y,
-        rotation: pos.rotation,
-        // scale: pos.scale,
-        duration: 1,
-        ease: "power4.out",
-      },
-      i * 0.2
-    );
-  });
+    i * 0.15 
+  );
+});
 }
