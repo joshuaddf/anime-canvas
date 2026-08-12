@@ -35,9 +35,10 @@ section {
   padding: 0 1.5rem;
 }
 
-p {
+.section-text {
   font-family: "Instrument Serif", sans-serif;
   font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: normal;
   max-width: 700px;
   text-align: center;
   line-height: 1.1;

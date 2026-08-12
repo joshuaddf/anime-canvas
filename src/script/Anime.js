@@ -47,7 +47,7 @@ export function setupAnimations() {
 
   let active = 0;
 
-  button.addEventListener("click", () => {
+  function setPanel(open) {
     const tl = gsap.timeline({
       defaults: {
         ease: "expo.out",
@@ -55,7 +55,12 @@ export function setupAnimations() {
       },
     });
 
-    active = 1 - active;
+    active = Number(open);
+    button.setAttribute("aria-label", open ? "Close information panel" : "Open information panel");
+    button.setAttribute("aria-expanded", String(open));
+    header.setAttribute("aria-hidden", String(!open));
+    overlay.classList.toggle("is-active", open);
+    document.body.style.overflow = open ? "hidden" : "";
 
     tl.to(buttonSlider, {
       y: -active * 100 + "%",
@@ -65,7 +70,7 @@ export function setupAnimations() {
     tl.to(
       header,
       {
-        height: active * 23 + "%",
+        height: open ? "auto" : 0,
       },
       "<"
     );
@@ -88,45 +93,41 @@ export function setupAnimations() {
       "<"
     );
 
-    if (overlay === 1) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+  }
+
+  button.addEventListener("click", () => setPanel(!active));
+  overlay.addEventListener("click", () => setPanel(false));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && active) {
+      setPanel(false);
+      button.focus();
     }
   });
 
 
 // stack animation
 const section2 = document.querySelector("#section-2");
-const sections2Text = section2.querySelector(".section-text");
 const imgStack = section2.querySelector(".img-stack");
 const images = imgStack.querySelectorAll("img");
-const section3 = document.querySelector("#section-3");
-const section3Text = section3.querySelector(".section-text");
-const section2Wrapper = document.querySelector(".section-2-wrapper");
 
-function getPositions() {
+function getPosition(index) {
   const isMobile = window.innerWidth <= 768;
+  const availableX = Math.max(0, (window.innerWidth - imgStack.offsetWidth) / 2 - 16);
+  const horizontal = isMobile
+    ? Math.min(110, availableX)
+    : Math.min(500, availableX);
+  const vertical = isMobile
+    ? Math.min(230, window.innerHeight * 0.28)
+    : Math.min(300, window.innerHeight * 0.32);
+  const columns = [-1, 0, 1, -1, 0, 1];
+  const rows = [-1, -1, -1, 1, 1, 1];
+  const rotations = [-15, isMobile ? 0 : -5, 15, 15, isMobile ? 0 : 5, -15];
 
-  if (isMobile) {
-    return [
-      { x: -150, y: -300, rotation: -15, scale: 0.3 },
-      { x: 0, y: -300, rotation: 0, scale: 0.3 },
-      { x: 150, y: -300, rotation: 15, scale: 0.3 },
-      { x: -150, y: 300, rotation: 15, scale: 0.3 },
-      { x: 0, y: 300, rotation: 0, scale: 0.3 },
-      { x: 150, y: 300, rotation: -15, scale: 0.3 },
-    ];
-  } else {
-    return [
-      { x: -500, y: -250, rotation: -15, scale: 0.5 },
-      { x: 0, y: -300, rotation: -5, scale: 0.5 },
-      { x: 500, y: -250, rotation: 15, scale: 0.5 },
-      { x: -500, y: 250, rotation: 15, scale: 0.5 },
-      { x: 0, y: 300, rotation: 5, scale: 0.5 },
-      { x: 500, y: 250, rotation: -15, scale: 0.5 },
-    ];
-  }
+  return {
+    x: horizontal * columns[index],
+    y: vertical * rows[index],
+    rotation: rotations[index],
+  };
 }
 
 gsap.set(images, {
@@ -160,17 +161,13 @@ const disperseTl = gsap.timeline({
   },
 });
 
-const positions = getPositions();
-
 images.forEach((img, i) => {
-  const pos = positions[i]; 
-
   disperseTl.to(
     img,
     {
-      x: pos.x,
-      y: pos.y,
-      rotation: pos.rotation,
+      x: () => getPosition(i).x,
+      y: () => getPosition(i).y,
+      rotation: () => getPosition(i).rotation,
       // scale: pos.scale, 
       ease: "power2.inOut",
     },
