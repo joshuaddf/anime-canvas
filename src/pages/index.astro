@@ -3,16 +3,26 @@ import PrimaryLayout from "../layouts/PrimaryLayout.astro";
 ---
 
 <PrimaryLayout>
-  <section id="section-1">
-    <h1 class="section-text">
+  <div class="corner-meta" aria-hidden="true">
+    <span>Faint Note</span>
+    <span>Photographs, 2024</span>
+  </div>
+
+  <section class="opening" id="top" aria-labelledby="page-title">
+    <p class="opening-kicker">A photographic note</p>
+    <h1 class="section-text" id="page-title">
       Photography is about noticing — freezing the small moments people often
-      walk past
+      walk past.
     </h1>
+    <p class="scroll-cue">Scroll to wander</p>
   </section>
-  <section id="section-2">
-    <div class="section-2-wrapper">
-      <p class="section-text">It is the practice of paying attention.</p>
-      <div class="img-stack">
+
+  <section class="constellation" id="constellation" aria-labelledby="constellation-title">
+    <div class="constellation-stage">
+      <p class="section-text" id="constellation-title">
+        It is the practice of paying attention.
+      </p>
+      <div class="img-stack" aria-hidden="true">
         <img src="/images/img4.webp" alt="" />
         <img src="/images/img1.webp" alt="" />
         <img src="/images/img5.webp" alt="" />
@@ -22,15 +32,52 @@ import PrimaryLayout from "../layouts/PrimaryLayout.astro";
       </div>
     </div>
   </section>
-  <section id="section-3">
+
+  <section class="feature-frame" aria-label="Featured photograph">
+    <figure class="feature-image">
+      <img src="/images/img3.webp" alt="A quiet moment observed in 2024" />
+      <figcaption>01 — What remains when everything else moves on</figcaption>
+    </figure>
+  </section>
+
+  <section class="reflection reflection-right">
+    <p class="section-index">02 / Attention</p>
     <p class="section-text">
       A way of slowing down, noticing the quiet details, and capturing the small
       pieces of life that usually go unseen.
     </p>
   </section>
-  <section id="section-4">
+
+  <section class="diptych" aria-label="Two photographs in conversation">
+    <figure class="diptych-primary">
+      <img src="/images/img1.webp" alt="A fleeting scene photographed in 2024" />
+    </figure>
+    <figure class="diptych-secondary">
+      <img src="/images/img5.webp" alt="A small detail photographed in 2024" />
+      <figcaption>Look once. Then look again.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reflection reflection-left">
+    <p class="section-index">03 / Presence</p>
     <p class="section-text">
-      In every frame, there’s a story — not always loud, but always present.
+      The photograph does not ask the moment to become important. It only asks
+      us to stay with it a little longer.
     </p>
   </section>
+
+  <section class="closing-frame" aria-labelledby="closing-title">
+    <img src="/images/img6.webp" alt="The final photograph in Faint Note" />
+    <div class="closing-shade"></div>
+    <p class="section-text" id="closing-title">
+      In every frame, there’s a story — not always loud, but always present.
+    </p>
+    <p class="closing-number">06 / 06</p>
+  </section>
+
+  <footer class="site-footer">
+    <p>Faint Note</p>
+    <p>A personal creation<br />Accra, 2024</p>
+    <a href="#top">Return to the beginning</a>
+  </footer>
 </PrimaryLayout>

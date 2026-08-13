@@ -59,6 +59,7 @@ export function setupAnimations() {
     button.setAttribute("aria-label", open ? "Close information panel" : "Open information panel");
     button.setAttribute("aria-expanded", String(open));
     header.setAttribute("aria-hidden", String(!open));
+    header.classList.toggle("is-open", open);
     overlay.classList.toggle("is-active", open);
     document.body.style.overflow = open ? "hidden" : "";
 
@@ -66,14 +67,6 @@ export function setupAnimations() {
       y: -active * 100 + "%",
       duration: 1.2,
     });
-
-    tl.to(
-      header,
-      {
-        height: open ? "auto" : 0,
-      },
-      "<"
-    );
 
     tl.to(
       headerSplit.lines,
@@ -105,58 +98,45 @@ export function setupAnimations() {
   });
 
 
-// stack animation
-const section2 = document.querySelector("#section-2");
-const imgStack = section2.querySelector(".img-stack");
+// constellation animation
+const constellation = document.querySelector("#constellation");
+const imgStack = constellation.querySelector(".img-stack");
 const images = imgStack.querySelectorAll("img");
 
 function getPosition(index) {
   const isMobile = window.innerWidth <= 768;
-  const availableX = Math.max(0, (window.innerWidth - imgStack.offsetWidth) / 2 - 16);
-  const horizontal = isMobile
-    ? Math.min(110, availableX)
-    : Math.min(500, availableX);
-  const vertical = isMobile
-    ? Math.min(230, window.innerHeight * 0.28)
-    : Math.min(300, window.innerHeight * 0.32);
-  const columns = [-1, 0, 1, -1, 0, 1];
-  const rows = [-1, -1, -1, 1, 1, 1];
-  const rotations = [-15, isMobile ? 0 : -5, 15, 15, isMobile ? 0 : 5, -15];
+  const availableX = Math.max(0, (window.innerWidth - imgStack.offsetWidth) / 2 - 12);
+  const horizontal = Math.min(isMobile ? 150 : 520, availableX);
+  const vertical = Math.min(isMobile ? 220 : 300, window.innerHeight * 0.31);
+  const xFactors = isMobile
+    ? [-0.85, 0.08, 0.9, -0.95, 0.1, 0.82]
+    : [-0.9, -0.16, 0.88, -0.74, 0.08, 0.94];
+  const yFactors = [-0.64, -0.98, -0.52, 0.7, 1, 0.58];
+  const rotations = [-12, -3, 9, 7, 2, -10];
+  const scales = isMobile
+    ? [0.72, 0.58, 0.7, 0.62, 0.74, 0.6]
+    : [0.78, 0.62, 0.86, 0.7, 0.9, 0.68];
 
   return {
-    x: horizontal * columns[index],
-    y: vertical * rows[index],
+    x: horizontal * xFactors[index],
+    y: vertical * yFactors[index],
     rotation: rotations[index],
+    scale: scales[index],
   };
 }
 
 gsap.set(images, {
   opacity: 0,
-  scale: 0.8,
-});
-
-gsap.to(images, {
-  opacity: 1,
-  scale: 1,
-  // stagger: 0.1,
-  ease: "power4.out",
-  scrollTrigger: {
-    trigger: section2,
-    start: "top 70%",
-    end: "top 20%",
-    scrub: 1,
-  },
+  scale: 0.72,
+  rotation: (index) => [-6, 4, -3, 5, -5, 2][index],
 });
 
 const disperseTl = gsap.timeline({
   scrollTrigger: {
-    trigger: section2,
+    trigger: constellation,
     start: "top top",
-    end: `+=${section2.offsetHeight + 50}`,
-    scrub: 1, 
-    pin: imgStack, 
-    anticipatePin: 1, 
-    pinSpacing: true,
+    end: "bottom bottom",
+    scrub: 1,
     invalidateOnRefresh: true,
   },
 });
@@ -165,13 +145,31 @@ images.forEach((img, i) => {
   disperseTl.to(
     img,
     {
+      opacity: 1,
       x: () => getPosition(i).x,
       y: () => getPosition(i).y,
       rotation: () => getPosition(i).rotation,
-      // scale: pos.scale, 
+      scale: () => getPosition(i).scale,
       ease: "power2.inOut",
     },
-    i * 0.15 
+    i * 0.08
+  );
+});
+
+gsap.utils.toArray(".feature-image, .diptych figure").forEach((figure) => {
+  gsap.fromTo(
+    figure,
+    { y: 70 },
+    {
+      y: 0,
+      ease: "none",
+      scrollTrigger: {
+        trigger: figure,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+      },
+    }
   );
 });
 }
