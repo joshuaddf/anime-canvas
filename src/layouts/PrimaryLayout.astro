@@ -90,7 +90,7 @@ import "../styles/globals.css";
     width: min(34rem, 42vw);
     height: 100dvh;
     overflow: hidden;
-    background-color: #f3f0ea;
+    background-color: #f7f5f2;
     z-index: 9;
     display: flex;
     align-items: center;
@@ -104,12 +104,12 @@ import "../styles/globals.css";
 
   .header-text {
     font-family: "Helvetica", sans-serif;
-    font-size: clamp(1rem, 1.3vw, 1.2rem);
-    font-weight: 400;
+    font-size: 16px;
+    font-weight: 600;
     text-align: left;
     max-width: 50ch;
-    padding: clamp(2rem, 5vw, 5rem);
-    line-height: 1.25;
+    padding: 2rem;
+    line-height: 1.1;
     color: #4a4a4a;
   }
 
@@ -164,7 +164,9 @@ import "../styles/globals.css";
   @media (max-width: 768px) {
     .header-container {
       top: auto;
+      right: 0;
       bottom: 0;
+      left: 0;
       width: 100%;
       height: auto;
       min-height: 46dvh;
@@ -176,10 +178,11 @@ import "../styles/globals.css";
     }
 
     .header-text {
-      padding: 4rem 1.5rem 2.5rem;
+      padding: 2rem 1.5rem;
     }
     .btn {
       top: 1rem;
+      z-index: 100;
     }
   }
 </style>

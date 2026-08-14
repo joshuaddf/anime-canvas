@@ -1,94 +1,36 @@
 ---
 import PrimaryLayout from "../layouts/PrimaryLayout.astro";
-
-const photographs = [
-  "/images/img4.webp",
-  "/images/img1.webp",
-  "/images/img5.webp",
-  "/images/img3.webp",
-  "/images/img2.webp",
-  "/images/img6.webp",
-];
 ---
 
 <PrimaryLayout>
-  <header class="masthead">
-    <a class="wordmark" href="#top" aria-label="Faint Note, return to top">
-      Faint Note
-    </a>
-  </header>
-
-  <section class="hero" id="top" aria-labelledby="page-title">
-    <h1 id="page-title">Faint Note</h1>
-    <p class="hero-intro">Photography begins with the decision to notice.</p>
-    <div class="hero-image">
-      <img src="/images/img4.webp" alt="A photograph from Faint Note" />
-    </div>
-    <p class="hero-caption">A quiet practice of paying attention.</p>
-    <span class="hero-arrow" aria-hidden="true">↓</span>
-  </section>
-
-  <section class="introduction" aria-labelledby="introduction-title">
-    <h2 id="introduction-title">
+  <section id="section-1">
+    <p class="section-text">
       Photography is about noticing — freezing the small moments people often
-      walk past.
-    </h2>
-  </section>
-
-  <section class="numbered-notes" aria-label="Three notes on photography">
-    <article>
-      <p class="note-number">01.</p>
-      <p class="note-copy">
-        Photography begins before the shutter, in the decision to notice.
-      </p>
-    </article>
-    <article>
-      <p class="note-number">02.</p>
-      <p class="note-copy">
-        The ordinary waits quietly for someone to slow down and look twice.
-      </p>
-    </article>
-    <article>
-      <p class="note-number">03.</p>
-      <p class="note-copy">
-        A frame keeps what time would otherwise carry away.
-      </p>
-    </article>
-  </section>
-
-  <section class="reflection" aria-label="Photography reflection">
-    <img src="/images/img5.webp" alt="A quiet detail photographed in Accra" />
-    <p>
-      The photograph does not ask the moment to become important. It only asks
-      us to stay with it a little longer.
+      walk past
     </p>
   </section>
-
-  <section class="photographs" aria-labelledby="photographs-title">
-    <div class="photographs-heading">
-      <h2 id="photographs-title">Photographs</h2>
-    </div>
-
-    <div class="photograph-list">
-      {photographs.map((photo, index) => (
-        <figure class={`photograph photograph-${index + 1}`}>
-          <div class="photograph-image">
-            <img src={photo} alt={`Photograph ${index + 1} from Faint Note`} />
-          </div>
-        </figure>
-      ))}
+  <section id="section-2">
+    <div class="section-2-wrapper">
+      <p class="section-text">It is the practice of paying attention.</p>
+      <div class="img-stack">
+        <img src="/images/img4.webp" alt="image" />
+        <img src="/images/img1.webp" alt="image" />
+        <img src="/images/img5.webp" alt="image" />
+        <img src="/images/img3.webp" alt="image" />
+        <img src="/images/img2.webp" alt="image" />
+        <img src="/images/img6.webp" alt="image" />
+      </div>
     </div>
   </section>
-
-  <section class="closing" aria-labelledby="closing-title">
-    <h2 id="closing-title">
+  <section id="section-3">
+    <p class="section-text">
+      A way of slowing down, noticing the quiet details, and capturing the small
+      pieces of life that usually go unseen.
+    </p>
+  </section>
+  <section id="section-4">
+    <p class="section-text">
       In every frame, there’s a story — not always loud, but always present.
-    </h2>
+    </p>
   </section>
-
-  <footer class="site-footer">
-    <p>Faint Note</p>
-    <p>A personal photographic essay<br />Accra, Ghana · 2024</p>
-    <a href="#top">Return to the beginning ↑</a>
-  </footer>
 </PrimaryLayout>
