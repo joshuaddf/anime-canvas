@@ -1,12 +1,4 @@
 @font-face {
-  font-family: "Instrument Serif";
-  src: url("/font/InstrumentSerif-Regular.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
   font-family: "Helvetica";
   src: url("/font/Helvetica.woff2") format("woff2");
   font-weight: normal;
@@ -44,7 +36,7 @@ section {
 }
 
 p {
-  font-family: "Instrument Serif", sans-serif;
+  font-family: "Helvetica", Arial, sans-serif;
   font-size: clamp(2rem, 5vw, 3.5rem);
   max-width: 700px;
   text-align: center;
