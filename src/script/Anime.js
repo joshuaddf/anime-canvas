@@ -33,7 +33,7 @@ export function setupAnimations() {
   const button = document.querySelector(".btn");
   const buttonSlider = document.querySelector(".btn-slider");
   const header = document.querySelector(".header-container");
-  const headerText = document.querySelectorAll(".header-text");
+  const headerText = document.querySelector(".header-text");
   const overlay = document.querySelector(".overlay");
 
   const headerSplit = new SplitText(headerText, {
@@ -47,7 +47,7 @@ export function setupAnimations() {
 
   let active = 0;
 
-  button.addEventListener("click", () => {
+  const setInfoOpen = (open) => {
     const tl = gsap.timeline({
       defaults: {
         ease: "expo.out",
@@ -55,20 +55,19 @@ export function setupAnimations() {
       },
     });
 
-    active = 1 - active;
+    active = open ? 1 : 0;
+
+    button.setAttribute("aria-expanded", String(Boolean(active)));
+    button.setAttribute("aria-label", active ? "Close information" : "Open information");
+    header.setAttribute("aria-hidden", String(!active));
+    header.classList.toggle("is-open", Boolean(active));
+    overlay.classList.toggle("is-active", Boolean(active));
+    document.body.style.overflow = active ? "hidden" : "";
 
     tl.to(buttonSlider, {
       y: -active * 100 + "%",
       duration: 1.2,
     });
-
-    tl.to(
-      header,
-      {
-        height: active * 23 + "%",
-      },
-      "<"
-    );
 
     tl.to(
       headerSplit.lines,
@@ -88,10 +87,14 @@ export function setupAnimations() {
       "<"
     );
 
-    if (overlay === 1) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+  };
+
+  button.addEventListener("click", () => setInfoOpen(!active));
+  overlay.addEventListener("click", () => setInfoOpen(false));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && active) {
+      setInfoOpen(false);
+      button.focus();
     }
   });
 

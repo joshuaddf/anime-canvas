@@ -34,7 +34,7 @@ import "../script/Lenis.js";
     <!-- <section class="intro">
       <h1>hi</h1>
     </section> -->
-    <div class="btn">
+    <button class="btn" type="button" aria-expanded="false" aria-controls="info-panel" aria-label="Open information">
       <div class="btn-slider">
         <div class="el">
           <span class="">Info</span>
@@ -43,16 +43,16 @@ import "../script/Lenis.js";
           <span class="">Close</span>
         </div>
       </div>
-    </div>
+    </button>
 
-    <div class="header-container">
+    <aside id="info-panel" class="header-container" aria-hidden="true">
       <p class="header-text">
         A quiet, brief acknowledgement of photography. A personal creation,
         inspired by some photographs taken in 2024. (Not the best photos, but...)
       </p>
-    </div>
+    </aside>
 
-    <div class="overlay"></div>
+    <button class="overlay" type="button" aria-label="Close information"></button>
 
     <slot />
   </body>
@@ -65,20 +65,34 @@ import "../script/Lenis.js";
     background: rgba(0, 0, 0, 0.2);
     pointer-events: none;
     opacity: 0;
+    border: 0;
+    padding: 0;
+    cursor: default;
+    z-index: 8;
+  }
+
+  .overlay.is-active {
+    pointer-events: auto;
+    cursor: pointer;
   }
 
   .header-container {
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 0%;
+    right: 0;
+    width: min(34rem, 42vw);
+    height: 100dvh;
     background-color: #f7f5f2;
     z-index: 9;
     display: flex;
     align-items: center;
     justify-content: start;
     container-type: inline-size;
+    transform: translateX(100%);
+  }
+
+  .header-container.is-open {
+    transform: translateX(0);
   }
 
   .header-text {
@@ -103,7 +117,7 @@ import "../script/Lenis.js";
 
   .btn {
     position: fixed;
-    z-index: 99;
+    z-index: 20;
     top: 2rem;
     right: 2rem;
     width: 50px;
@@ -117,6 +131,11 @@ import "../script/Lenis.js";
     font-family: "Helvetica", sans-serif;
     font-size: clamp(1rem, 1.1vw, 1.5rem);
     overflow: hidden;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: #fff;
+    mix-blend-mode: difference;
   }
 
   .btn-slider {
@@ -135,6 +154,27 @@ import "../script/Lenis.js";
     &:nth-child(2) {
       position: absolute;
       top: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .header-container {
+      top: auto;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: auto;
+      min-height: 42dvh;
+      transform: translateY(100%);
+      align-items: flex-start;
+    }
+
+    .header-container.is-open {
+      transform: translateY(0);
+    }
+
+    .header-text {
+      padding: 4rem 1.5rem 2.5rem;
     }
   }
 </style>
